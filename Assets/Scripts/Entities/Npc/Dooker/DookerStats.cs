@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class DookerStats : MonoBehaviour {
     
-    [SerializeField] private float maxStomachWaste = 100; 
-    [SerializeField] private float _stomachWaste;
+    [SerializeField] private float maxPoower = 100; 
 
     void Awake() {
-        _stomachWaste = 100;
+        _poower = 100;
     }
 
-    public float StomachWaste { 
+    private float _poower;
+    public float Poower { 
         get {
-            return _stomachWaste;
+            return _poower;
         }
         set {
-            value = Mathf.Clamp(value, 0, maxStomachWaste);     // Clamp the stomach waste value between 0 - MAX
-            _stomachWaste = value;
+            value = Mathf.Clamp(value, 0, maxPoower);     // Clamp the poower value between 0 - MAX
+            _poower = value;
         }
      }
 

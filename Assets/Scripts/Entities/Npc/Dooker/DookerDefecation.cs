@@ -27,7 +27,7 @@ public class DookerDefecation : MonoBehaviour {
         Item clone = Instantiate(Database.Instance.GetItem(ItemName.Doodie_Normal),                                     // Spawn doodie
                         transform.position + doodieSpawnPosition, Quaternion.identity);     
         clone.GetComponent<Rigidbody>().AddForce(-transform.forward * doodieSpawnForce);                                // Add force to the rigidbody
-        stats.StomachWaste -= stomachWasteReduction;
+        stats.Poower -= stomachWasteReduction;
         NeedToDefecate = 0;
     }
 
@@ -56,7 +56,7 @@ public class DookerDefecation : MonoBehaviour {
                 return false;
             }
             // False if we haven't enough stomach waste
-            else if (stats.StomachWaste <= defecationMinThreshold) {
+            else if (stats.Poower <= defecationMinThreshold) {
                 return false;
             }
             return true;    // Otherwise return true
