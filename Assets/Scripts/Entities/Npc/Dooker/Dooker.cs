@@ -18,8 +18,12 @@ namespace Doodie.NPC {
         public Vector3 doodieSpawnPos = new Vector3(0f, .3f, 0f);
         [HideInInspector] public Vector3 doodieSpawnDirection;
         public Vector3 doodieSpawnEuler;
-        
-        // Components
+
+        // Misc
+        [HideInInspector] public StateMachine<Dooker> stateMachine;
+
+        #region Components
+        // Navmesh agent for the NPC
         private NavMeshAgent _agent;
         public NavMeshAgent Agent {
             get {
@@ -27,10 +31,18 @@ namespace Doodie.NPC {
                     _agent = GetComponent<NavMeshAgent>();
                 return _agent;
             }
-        } 
+        }
 
-        // Misc
-        [HideInInspector] public StateMachine<Dooker> stateMachine;
+        // Stores stats for the dooker
+        private DookerStats _dookerStats;
+        public DookerStats DookerStats {
+            get {
+                if (_dookerStats == null)
+                    _dookerStats = GetComponent<DookerStats>();
+                return _dookerStats;
+            }
+        }
+        #endregion
 
         void Start() {
             // Init
@@ -42,6 +54,7 @@ namespace Doodie.NPC {
             StartCoroutine(BrainTick());
         }
 
+        // Runs for x times in a second and determines if the NPC wants to change state
         IEnumerator BrainTick() {
             while(true) {
 
@@ -60,7 +73,6 @@ namespace Doodie.NPC {
                 yield return new WaitForSeconds(1 / (float)brainTickRate);
             }
         }
-
     }
     
     // Move
@@ -114,10 +126,15 @@ namespace Doodie.NPC {
         }
 
         public override void EnterState(Dooker owner) {
-            // Spawn shit
+            // Spawn a doodie and add randomized force to it
             Item clone = Dooker.Instantiate(Database.Instance.GetItem(ItemName.Doodie_Normal), owner.transform.position + owner.doodieSpawnPos, Quaternion.Euler(-owner.transform.forward));
             Rigidbody rig = clone.GetComponent<Rigidbody>();
             rig.AddForce(owner.doodieSpawnDirection * owner.doodieSpawnForce, ForceMode.Impulse);
+            
+            // Update dooker stats
+
+            // Add experience to the dooker skills
+            
             ExitState(owner);
         }
 
@@ -126,7 +143,7 @@ namespace Doodie.NPC {
         }
 
         public override void UpdateState(Dooker owner) {
-
+            
         }
 
     }

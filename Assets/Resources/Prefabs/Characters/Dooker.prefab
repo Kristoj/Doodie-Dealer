@@ -133,6 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7683740914143387608}
   - component: {fileID: 7683740914143387623}
+  - component: {fileID: 9177463624341929711}
+  - component: {fileID: 809529056950929102}
   - component: {fileID: 7683740914143387609}
   m_Layer: 0
   m_Name: Dooker
@@ -174,6 +176,38 @@ MonoBehaviour:
   doodieSpawnPos: {x: 0, y: 0.5, z: 0}
   doodieSpawnDirection: {x: 0, y: 0, z: 0}
   doodieSpawnEuler: {x: 0, y: 0, z: 0}
+--- !u!114 &9177463624341929711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683740914143387610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9dbec21854dad4e918bb1457d432b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poower: 100
+  defecationUrgeRiseSpeed: 5
+  defecationThreshold: 65
+  scoreResult: 0
+  defecationUrge: 50
+--- !u!114 &809529056950929102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683740914143387610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae95158330e7edd43bdfcff353982e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dookerSkills:
+  - skillName: Strength
+  - skillName: Attack
 --- !u!195 &7683740914143387609
 NavMeshAgent:
   m_ObjectHideFlags: 0
