@@ -42,6 +42,16 @@ namespace Doodie.NPC {
                 return _dookerStats;
             }
         }
+
+        // Storest levels for the dooker
+        private DookerLevels _dookerLevels;
+        public DookerLevels DookerLevels {
+            get {
+                if (_dookerLevels == null) 
+                    _dookerLevels = GetComponent<DookerLevels>();
+                return _dookerLevels;
+            }
+        }
         #endregion
 
         void Start() {
@@ -132,8 +142,10 @@ namespace Doodie.NPC {
             rig.AddForce(owner.doodieSpawnDirection * owner.doodieSpawnForce, ForceMode.Impulse);
             
             // Update dooker stats
+            owner.DookerStats.RemoveExcrement(15);
 
             // Add experience to the dooker skills
+
             
             ExitState(owner);
         }

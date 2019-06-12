@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 0649
+using UnityEngine;
 
 namespace Doodie.NPC {
 
@@ -6,7 +7,7 @@ namespace Doodie.NPC {
 
         [Header("Defecation Settings")]
         [SerializeField] private float maxExcrementAmount = 100;
-        [SerializeField] private float excrementAmount = 100;
+        [SerializeField] private float excrement = 100;
         [SerializeField] private AnimationCurve excrementUrgeCurve;
         [SerializeField] private float excrementUrgeMultiplier = 5f;
         [SerializeField] private float defecationUrgeRiseSpeed = 5f;
@@ -20,15 +21,15 @@ namespace Doodie.NPC {
                 float score = 0;
 
                 // Increment the score based on the dookers excrement amount
-                float excrementUrge = excrementUrgeCurve.Evaluate(excrementAmount / maxExcrementAmount) * excrementUrgeMultiplier;
-
+                float excrementUrge = excrementUrgeCurve.Evaluate(excrement / maxExcrementAmount) * excrementUrgeMultiplier;
+                
 
                 // Increment the score based on dookers urge to defecate
                 if (defecationUrge >= defecationThreshold) {
                     float scoreMultiplier = 1f;
                     float thresholdRange = 100 - defecationThreshold;
                     float rangePercentage = 100 / (thresholdRange / (defecationUrge - defecationThreshold));
-                    score = rangePercentage * scoreMultiplier;
+                    score += rangePercentage * scoreMultiplier;
                 }
                 // TODO : Incement the score based on the distance to a toilet
                 return score;
@@ -45,6 +46,11 @@ namespace Doodie.NPC {
             defecationUrge = Mathf.Clamp(defecationUrge, 0, 100);
         }
 
+
+        public void RemoveExcrement(float amount) {
+            excrement -= amount;
+            excrement = Mathf.Clamp(excrement, 0, maxExcrementAmount);
+        }
     }
 
 }
