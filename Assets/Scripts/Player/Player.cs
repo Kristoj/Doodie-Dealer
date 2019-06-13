@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
         // TODO
         // This should be somewhere else
         // Player class shouldn't have to worry about application settings....
-        Application.targetFrameRate = 72;
+        Application.targetFrameRate = 144;
     }
 
     

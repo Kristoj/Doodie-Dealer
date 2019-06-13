@@ -55,9 +55,6 @@ namespace Doodie.NPC {
         #endregion
 
         void Start() {
-            // Init
-            doodieSpawnDirection = -transform.forward;
-
             // Setup state machine for the npc and start with idle state
             stateMachine = new StateMachine<Dooker>(this);
             stateMachine.ChangeState(State_Move.Instance);
@@ -106,6 +103,7 @@ namespace Doodie.NPC {
                 0,
                 Random.Range(-owner.moveRadius, owner.moveRadius)
             );
+            randomPos += owner.transform.position;
             owner.Agent.SetDestination(randomPos);
         }
 
@@ -139,7 +137,8 @@ namespace Doodie.NPC {
             // Spawn a doodie and add randomized force to it
             Item clone = Dooker.Instantiate(Database.Instance.GetItem(ItemName.Doodie_Normal), owner.transform.position + owner.doodieSpawnPos, Quaternion.Euler(-owner.transform.forward));
             Rigidbody rig = clone.GetComponent<Rigidbody>();
-            rig.AddForce(owner.doodieSpawnDirection * owner.doodieSpawnForce, ForceMode.Impulse);
+            rig.AddForce(-owner.transform.forward * owner.doodieSpawnForce, ForceMode.Impulse);
+            rig.AddTorque(Random.insideUnitSphere * 15, ForceMode.Impulse);
             
             // Update dooker stats
             owner.DookerStats.RemoveExcrement(15);

@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3134935538790397223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2751707941280774715}
+  - component: {fileID: 4194361237926176638}
+  m_Layer: 2
+  m_Name: Colider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2751707941280774715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134935538790397223}
+  m_LocalRotation: {x: -0, y: -0, z: 0.70710707, w: 0.70710653}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5242313043427612003}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
+--- !u!136 &4194361237926176638
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134935538790397223}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.05
+  m_Height: 0.45
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5242313043427612002
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +76,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5242313043966965464}
+  - {fileID: 2751707941280774715}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,21 +162,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5242313043966965464}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: e7e634da1c3936e4fb94b4f22395ecb5,
-        type: 3}
-      propertyPath: m_Name
-      value: Doodie_Normal
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: e7e634da1c3936e4fb94b4f22395ecb5,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: -5710003751877970634, guid: e7e634da1c3936e4fb94b4f22395ecb5,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: e7e634da1c3936e4fb94b4f22395ecb5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -185,6 +216,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e7e634da1c3936e4fb94b4f22395ecb5,
+        type: 3}
+      propertyPath: m_Name
+      value: Doodie_Normal
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e7e634da1c3936e4fb94b4f22395ecb5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -5710003751877970634, guid: e7e634da1c3936e4fb94b4f22395ecb5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -1671727974146666381, guid: e7e634da1c3936e4fb94b4f22395ecb5,
         type: 3}

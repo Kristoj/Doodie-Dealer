@@ -130,6 +130,7 @@ namespace Doodie.Player {
         void Jump() {
             if (controller.isGrounded) {
                 velocity.y = jumpForce;
+                SoundSystem.PlaySound2D("");
             }
         }
     }
