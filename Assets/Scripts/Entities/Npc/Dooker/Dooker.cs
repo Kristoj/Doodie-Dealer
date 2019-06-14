@@ -8,7 +8,7 @@ namespace Doodie.NPC {
     public class Dooker : MonoBehaviour {
         
         [Header("AI Settings")]
-        public int brainTickRate = 4;
+        public int pollRate = 4;
 
         [Header("Movement")]
         public float moveRadius = 15f;
@@ -21,6 +21,8 @@ namespace Doodie.NPC {
 
         // Misc
         [HideInInspector] public StateMachine<Dooker> stateMachine;
+        private Animator animator;
+        private float animationVelocity;
 
         #region Components
         // Navmesh agent for the NPC
@@ -58,27 +60,43 @@ namespace Doodie.NPC {
             // Setup state machine for the npc and start with idle state
             stateMachine = new StateMachine<Dooker>(this);
             stateMachine.ChangeState(State_Move.Instance);
-            StartCoroutine(BrainTick());
+            StartCoroutine(PollStates());
+            animator = GetComponent<Animator>();
+        }
+
+        void Update() {
+            animationVelocity = Mathf.Lerp(animationVelocity, Agent.velocity.magnitude, 4 * Time.deltaTime);
+            animator.SetFloat("velocity", animationVelocity);    
         }
 
         // Runs for x times in a second and determines if the NPC wants to change state
-        IEnumerator BrainTick() {
+        IEnumerator PollStates() {
             while(true) {
 
-                // TODO : If NPC is idling rise his will to do something
                 if (stateMachine.currentState == null) {
                     // TEMP : Randomizing next state
-                    int rng = Random.Range(0, 2);
-                    if (rng == 0) {
-                        stateMachine.ChangeState(State_Move.Instance);
-                    } else {
-                        stateMachine.ChangeState(State_Defecate.Instance);
+                    int rng = Random.Range(0, 3);
+                    switch (rng) {
+                        case 0:
+                            stateMachine.ChangeState(State_Move.Instance);
+                            break;
+                        case 1:
+                            stateMachine.ChangeState(State_Defecate.Instance);
+                            break;
+                        case 2:
+                            stateMachine.ChangeState(State_Eat.Instance);
+                            break;
                     }
                 }
 
                 stateMachine.Update();
-                yield return new WaitForSeconds(1 / (float)brainTickRate);
+                yield return new WaitForSeconds(1 / (float)pollRate);
             }
+        }
+
+        public void Eat(float amount) {
+            DookerStats.foodMass += amount;
+            // TODO : FX
         }
     }
     
@@ -134,18 +152,23 @@ namespace Doodie.NPC {
         }
 
         public override void EnterState(Dooker owner) {
+            owner.StartCoroutine(ShitPush(owner));
+        }
+
+        IEnumerator ShitPush(Dooker owner) {
+            SoundSystem.PlaySound("shit_push01", 1f, owner.transform.position);
+            yield return new WaitForSeconds(Random.Range(.5f, 2));
+
             // Spawn a doodie and add randomized force to it
             Item clone = Dooker.Instantiate(Database.Instance.GetItem(ItemName.Doodie_Normal), owner.transform.position + owner.doodieSpawnPos, Quaternion.Euler(-owner.transform.forward));
             Rigidbody rig = clone.GetComponent<Rigidbody>();
             rig.AddForce(-owner.transform.forward * owner.doodieSpawnForce, ForceMode.Impulse);
             rig.AddTorque(Random.insideUnitSphere * 15, ForceMode.Impulse);
-            
+
             // Update dooker stats
             owner.DookerStats.RemoveExcrement(15);
 
-            // Add experience to the dooker skills
-
-            
+            // TODO : Add experience to the dooker skills
             ExitState(owner);
         }
 
@@ -158,4 +181,58 @@ namespace Doodie.NPC {
         }
 
     }
+
+    public class State_Eat : State<Dooker> {
+
+        public override string StateName => "Eating";
+
+        private static State_Eat _instance;
+        public static State_Eat Instance {
+            get {
+                if (_instance == null)
+                    _instance = new State_Eat();
+                return _instance;
+            }
+        }
+
+        public override void EnterState(Dooker owner) {
+            FindClosestFoodDeposit(owner);
+        }
+
+        void FindClosestFoodDeposit(Dooker owner) {
+            FoodDeposit closestDepo = GameManager.GetClosestFoodDeposit(owner);
+            owner.StartCoroutine(MoveToFoodDepo(owner, closestDepo));
+        }
+
+        IEnumerator MoveToFoodDepo(Dooker owner, FoodDeposit foodDepo) {
+
+            // Set NPC destination to the food depo and start distance checking after he is appromixately in-range
+            float travelTime = Vector3.Distance(owner.transform.position, foodDepo.transform.position) / owner.Agent.speed *.7f;
+            owner.Agent.SetDestination(foodDepo.transform.position);
+            yield return new WaitForSeconds(travelTime);
+
+            // Check the distance between the depo and NPC untill we're close enough to it
+            float dst = Vector3.Distance(owner.transform.position, foodDepo.transform.position);
+            while (dst > 1) {
+                dst = Vector3.Distance(owner.transform.position, foodDepo.transform.position);
+                yield return new WaitForSeconds(.2f);
+            }
+
+            // Take food from the food depo
+            owner.Agent.SetDestination(owner.transform.position);
+            foodDepo.TakeFood(owner);
+
+            // After we have finished eating exit the state
+            ExitState(owner);
+        }
+
+        public override void ExitState(Dooker owner) {
+            owner.stateMachine.ClearState();
+        }
+
+        public override void UpdateState(Dooker owner) {
+            
+        }
+    }
+
 }
