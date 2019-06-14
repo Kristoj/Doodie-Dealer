@@ -168,6 +168,9 @@ namespace Doodie.NPC {
             // Update dooker stats
             owner.DookerStats.RemoveExcrement(15);
 
+            // FX
+            SoundSystem.PlaySound("item_pickup", 1f, owner.transform.position);
+
             // TODO : Add experience to the dooker skills
             ExitState(owner);
         }
