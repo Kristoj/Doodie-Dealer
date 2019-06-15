@@ -1,4 +1,6 @@
-﻿namespace Doodie.NPC {
+﻿using UnityEngine;
+
+namespace Doodie.NPC {
 
     public class StateMachine<T> {
 

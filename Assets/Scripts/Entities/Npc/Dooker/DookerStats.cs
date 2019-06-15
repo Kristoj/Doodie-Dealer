@@ -8,47 +8,36 @@ namespace Doodie.NPC {
         [Header("Defecation Settings")]
         [Tooltip("The maximum amount of foodmass that the stomach can hold in milliliters")]
         public float maxFoodMass = 1500;
-        [SerializeField] private AnimationCurve defecationUrgeCurve;
-        [SerializeField] private float defecationUrgeMultiplier = 5f;
-        [SerializeField] private float defecationUrgeRiseSpeed = 5f;
-        [SerializeField] private float defecationThreshold = 65f;
-        [SerializeField] private float scoreResult;
-        [SerializeField] private float defecationUrge;
+        public AnimationCurve defecationUrgeCurve;
+        public float defecationUrgeMultiplier = 30f;
         [Tooltip("The amount of foodmass in the stomach in milliliters")]
         public float foodMass;
         [Tooltip("The amount of excrement in the intestines in milliliters.")]
-        [SerializeField] private float excrement;
+        public float excrement;
 
         [Header("Digestion")]
         [SerializeField] private float digestionSpeed = 1;
+        public float digestionEfficiency = 3f;
 
-        public float DefecationScore {
-            get {
-                float score = 0;
-
-                // Increment the score based on the dookers excrement amount
-                float excrementUrge = defecationUrgeCurve.Evaluate(foodMass / maxFoodMass) * defecationUrgeMultiplier;
-
-                // Increment the score based on dookers urge to defecate
-                if (defecationUrge >= defecationThreshold) {
-                    float scoreMultiplier = 1f;
-                    float thresholdRange = 100 - defecationThreshold;
-                    float rangePercentage = 100 / (thresholdRange / (defecationUrge - defecationThreshold));
-                    score += rangePercentage * scoreMultiplier;
-                }
-                // TODO : Increment the score based on the distance to a toilet
-                return score;
-            }
-        }
+        [Header("Consumption")]
+        [Tooltip("Percentage of nutrients in the body.")]
+        public float nutrients = 100;
+        public float nutrientDrainRate = 2f;
+        [Tooltip("Percentage of dookers feeling of hunger.")]
+        public float hunger = 0;
+        public float hungerGrowRate = 2f;
+        public AnimationCurve hungerGrowCurve;
+        public AnimationCurve hungerUrgeCurve;
+        public AnimationCurve foodDistanceCurve;
 
         void Start() {
             excrement = foodMass;
         }
 
         void Update() {
-            UpdateDefecationUrge();
             Digestion();
-            scoreResult = DefecationScore;
+            DrainNutrients();
+            GrowHunger();
         }
 
         // Turns foodmass into excrement overtime
@@ -57,23 +46,60 @@ namespace Doodie.NPC {
             digestionAmount = Mathf.Clamp(digestionAmount, 0, digestionSpeed);
             if (digestionAmount <= .05) {
                 foodMass = 0;
-                excrement = 0;
                 return;
             }
 
-            foodMass -= digestionAmount * Time.deltaTime;
-            excrement += digestionAmount * Time.deltaTime;
+            RemoveFoodMass(digestionAmount * Time.deltaTime);
+            AddExcrement(digestionAmount * Time.deltaTime);
+            AddNutrients(digestionAmount * (digestionEfficiency / 100) * Time.deltaTime);
         }
 
-        void UpdateDefecationUrge() {
-            defecationUrge += defecationUrgeRiseSpeed * Time.deltaTime;
-            defecationUrge = Mathf.Clamp(defecationUrge, 0, 100);
+        void DrainNutrients() {
+            nutrients -= nutrientDrainRate * Time.deltaTime;
+            nutrients = Mathf.Clamp(nutrients, 0, 100);
         }
 
+        // Grow hunger according to how much nutrients dooker has in his body
+        void GrowHunger() {
+            if (foodMass <= 0) {
+                hunger += hungerGrowCurve.Evaluate((100 - nutrients) / 100) * hungerGrowRate * Time.deltaTime;
+                hunger = Mathf.Clamp(hunger, 0, 100);
+            }
+        }
+
+        public void SetHunger(float amount) {
+            hunger = amount;
+            hunger = Mathf.Clamp(hunger, 0, 100);
+        }
+
+        public void AddNutrients(float amount) {
+            nutrients += amount;
+            nutrients = Mathf.Clamp(nutrients, 0, 100);
+        }
+
+        public void RemoveNutrients(float amount) {
+            nutrients -= amount;
+            nutrients = Mathf.Clamp(nutrients, 0, 100);
+        }
+
+        public void AddExcrement(float amount) {
+            excrement += amount;
+            excrement = Mathf.Clamp(excrement, 0, maxFoodMass);
+        }
 
         public void RemoveExcrement(float amount) {
             excrement -= amount;
             excrement = Mathf.Clamp(excrement, 0, maxFoodMass);
+        }
+
+        public void AddFoodMass(float amount) {
+            foodMass += amount;
+            foodMass = Mathf.Clamp(foodMass, 0, maxFoodMass);
+        }
+
+        public void RemoveFoodMass(float amount) {
+            foodMass -= amount;
+            foodMass = Mathf.Clamp(foodMass, 0, maxFoodMass);
         }
 
     }

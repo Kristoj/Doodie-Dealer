@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultCameraOffset: {x: 0, y: 1.5, z: 0}
-  mouseSensitivity: 130
+  mouseSensitivity: 170
   head: {fileID: 0}
   cam: {fileID: 0}
   camEuler: {x: 0, y: 0, z: 0}
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba1b3dcc0b6b7c4da5a6fd12a5167d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusRange: 3.8
+  focusRange: 3
   focusMask:
     serializedVersion: 2
     m_Bits: 513

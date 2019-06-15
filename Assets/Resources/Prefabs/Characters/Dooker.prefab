@@ -81,10 +81,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pollRate: 4
   moveRadius: 15
-  doodieSpawnForce: 15
+  idleTimeMinMax: {x: 3, y: 7}
+  doodieSpawnForce: 13
   doodieSpawnPos: {x: 0, y: 1, z: 0}
   doodieSpawnDirection: {x: 0, y: 0, z: 0}
   doodieSpawnEuler: {x: 0, y: 0, z: 0}
+  defecationScore: 0
 --- !u!114 &9177463624341929711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,18 +102,154 @@ MonoBehaviour:
   maxFoodMass: 1500
   defecationUrgeCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  defecationUrgeMultiplier: 5
-  defecationUrgeRiseSpeed: 5
-  defecationThreshold: 65
-  scoreResult: 0
-  defecationUrge: 50
-  foodMass: 0
+  defecationUrgeMultiplier: 80
+  foodMass: 300
   excrement: 100
-  digestionSpeed: 3
+  digestionSpeed: 35
+  digestionEfficiency: 15
+  nutrients: 100
+  nutrientDrainRate: 2.7
+  hunger: 0
+  hungerGrowRate: 8
+  hungerGrowCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.20216951
+      outSlope: 0.20216951
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.23689929
+    - serializedVersion: 3
+      time: 0.44850615
+      value: 0.27408504
+      inSlope: 1.7048798
+      outSlope: 1.7048798
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.15264696
+      outWeight: 0.35172755
+    - serializedVersion: 3
+      time: 0.79953724
+      value: 0.8966908
+      inSlope: 0.4810829
+      outSlope: 0.4810829
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.52191174
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.5153536
+      outSlope: 0.5153536
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hungerUrgeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.057762716
+      outSlope: -0.057762716
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.17365506
+    - serializedVersion: 3
+      time: 0.5558677
+      value: 0.2855356
+      inSlope: 1.1052411
+      outSlope: 1.1052411
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.18312255
+      outWeight: 0.2749261
+    - serializedVersion: 3
+      time: 0.79794204
+      value: 0.6617667
+      inSlope: 1.6882308
+      outSlope: 1.6882308
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20885062
+      outWeight: 0.39693055
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.673942
+      outSlope: 1.673942
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  foodDistanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.99998474
+      inSlope: -0.12554812
+      outSlope: -0.12554812
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1644319
+    - serializedVersion: 3
+      time: 0.65669256
+      value: 0.2903113
+      inSlope: -3.87852
+      outSlope: -3.87852
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09677736
+      outWeight: 0.088189974
+    - serializedVersion: 3
+      time: 1
+      value: -0.0000014356337
+      inSlope: -0.8456349
+      outSlope: -0.8456349
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &809529056950929102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,16 +373,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -1529604869085755560, guid: 7b74e0b2f0bc49441932e7e41488c7f2,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 5efb57bcc22caf0478b6b0d09a36c32c, type: 2}
     - target: {fileID: 3046224791751252233, guid: 7b74e0b2f0bc49441932e7e41488c7f2,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 62939f0bb82d9934c92071a63d66ce45, type: 2}
+    - target: {fileID: -1529604869085755560, guid: 7b74e0b2f0bc49441932e7e41488c7f2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5efb57bcc22caf0478b6b0d09a36c32c, type: 2}
     - target: {fileID: 5710696861404388041, guid: 7b74e0b2f0bc49441932e7e41488c7f2,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2035111234}
-  m_IndirectSpecularColor: {r: 6.047993, g: 8.563536, b: 13.603699, a: 1}
+  m_IndirectSpecularColor: {r: 6.066754, g: 8.58853, b: 13.636173, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267c25fae422e63499571919c271f5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFoodMass: 10
+  maxFoodMass: 5000
   foodMass: 0
 --- !u!1 &258284815
 GameObject:
@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267c25fae422e63499571919c271f5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFoodMass: 10
+  maxFoodMass: 5000
   foodMass: 0
 --- !u!23 &258284819
 MeshRenderer:
@@ -345,6 +345,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dooker (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7683740914143387610, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7683740914143387608, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -399,11 +404,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7683740914143387623, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
-        type: 3}
-      propertyPath: moveRadius
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a05fd26f816f07468ee16c0afcd5ebd, type: 3}
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267c25fae422e63499571919c271f5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFoodMass: 10
+  maxFoodMass: 5000
   foodMass: 0
 --- !u!23 &689223619
 MeshRenderer:
@@ -838,6 +838,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dooker (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7683740914143387610, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7683740914143387608, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -892,11 +897,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7683740914143387623, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
-        type: 3}
-      propertyPath: moveRadius
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a05fd26f816f07468ee16c0afcd5ebd, type: 3}
@@ -1065,7 +1065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267c25fae422e63499571919c271f5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFoodMass: 10
+  maxFoodMass: 5000
   foodMass: 0
 --- !u!23 &1506599711
 MeshRenderer:
@@ -1288,7 +1288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267c25fae422e63499571919c271f5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFoodMass: 10
+  maxFoodMass: 5000
   foodMass: 0
 --- !u!23 &1726370442
 MeshRenderer:
@@ -1347,6 +1347,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dooker (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7683740914143387610, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7683740914143387608, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1401,11 +1406,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7683740914143387623, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
-        type: 3}
-      propertyPath: moveRadius
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a05fd26f816f07468ee16c0afcd5ebd, type: 3}
@@ -1719,7 +1719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267c25fae422e63499571919c271f5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFoodMass: 10
+  maxFoodMass: 5000
   foodMass: 0
 --- !u!23 &2003790123
 MeshRenderer:
@@ -1841,6 +1841,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dooker (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7683740914143387610, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7683740914143387608, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1895,11 +1900,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7683740914143387623, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
-        type: 3}
-      propertyPath: moveRadius
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a05fd26f816f07468ee16c0afcd5ebd, type: 3}
@@ -2145,6 +2145,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dooker (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7683740914143387610, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7683740914143387608, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2199,11 +2204,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7683740914143387623, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
-        type: 3}
-      propertyPath: moveRadius
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a05fd26f816f07468ee16c0afcd5ebd, type: 3}
@@ -2409,11 +2409,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7683740914143387623, guid: 7a05fd26f816f07468ee16c0afcd5ebd,
-        type: 3}
-      propertyPath: moveRadius
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a05fd26f816f07468ee16c0afcd5ebd, type: 3}
 --- !u!1001 &8519277205530879770
@@ -2427,11 +2422,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8519277205986813981, guid: 347911f1c6565b141a66dc3d020d41de,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8519277205986813970, guid: 347911f1c6565b141a66dc3d020d41de,
         type: 3}
@@ -2488,10 +2478,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5710301470519003870, guid: 347911f1c6565b141a66dc3d020d41de,
+    - target: {fileID: 8519277205986813968, guid: 347911f1c6565b141a66dc3d020d41de,
         type: 3}
-      propertyPath: focusRange
-      value: 3
+      propertyPath: mouseSensitivity
+      value: 190
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 347911f1c6565b141a66dc3d020d41de, type: 3}

@@ -8,10 +8,11 @@ namespace Doodie.NPC {
     public class Dooker : MonoBehaviour {
         
         [Header("AI Settings")]
-        public int pollRate = 4;
+        public int pollRate = 1;
 
         [Header("Movement")]
         public float moveRadius = 15f;
+        public Vector2 idleTimeMinMax = new Vector2(3, 7);
 
         [Header("Defecation")]
         public float doodieSpawnForce = 5f;
@@ -23,6 +24,9 @@ namespace Doodie.NPC {
         [HideInInspector] public StateMachine<Dooker> stateMachine;
         private Animator animator;
         private float animationVelocity;
+
+        // Debug
+        [SerializeField] private float defecationScore;
 
         #region Components
         // Navmesh agent for the NPC
@@ -59,7 +63,7 @@ namespace Doodie.NPC {
         void Start() {
             // Setup state machine for the npc and start with idle state
             stateMachine = new StateMachine<Dooker>(this);
-            stateMachine.ChangeState(State_Move.Instance);
+            stateMachine.ChangeState(State_Idle.Instance);
             StartCoroutine(PollStates());
             animator = GetComponent<Animator>();
         }
@@ -67,6 +71,7 @@ namespace Doodie.NPC {
         void Update() {
             animationVelocity = Mathf.Lerp(animationVelocity, Agent.velocity.magnitude, 4 * Time.deltaTime);
             animator.SetFloat("velocity", animationVelocity);    
+            defecationScore = State_Defecate.Instance.GetScore(this);
         }
 
         // Runs for x times in a second and determines if the NPC wants to change state
@@ -74,18 +79,30 @@ namespace Doodie.NPC {
             while(true) {
 
                 if (stateMachine.currentState == null) {
-                    // TEMP : Randomizing next state
-                    int rng = Random.Range(0, 3);
-                    switch (rng) {
-                        case 0:
-                            stateMachine.ChangeState(State_Move.Instance);
-                            break;
-                        case 1:
-                            stateMachine.ChangeState(State_Defecate.Instance);
-                            break;
-                        case 2:
-                            stateMachine.ChangeState(State_Eat.Instance);
-                            break;
+                    // Get the largest score from all possible states
+                    State<Dooker>[] states = new State<Dooker>[] {
+                        State_Move.Instance,
+                        State_Defecate.Instance,
+                        State_Eat.Instance
+                    };
+
+                    // Select the state that has the biggest score as best state
+                    State<Dooker> bestState = null;
+                    float highestScore = 0;
+                    for (int i = 0; i < states.Length; i++) {
+                        float score = states[i].GetScore(this);
+                        if (states[i].GetScore(this) > highestScore) {
+                            highestScore = score;
+                            bestState = states[i];
+                        }
+
+                        // Debug
+                        Debug.Log(states[i].StateName + " got the score of " + score + ".");
+                    }
+
+                    // Change to the best state
+                    if (bestState != null) {
+                        stateMachine.ChangeState(bestState);
                     }
                 }
 
@@ -93,17 +110,53 @@ namespace Doodie.NPC {
                 yield return new WaitForSeconds(1 / (float)pollRate);
             }
         }
-
-        public void Eat(float amount) {
-            DookerStats.foodMass += amount;
-            // TODO : FX
-        }
     }
     
-    // Move
+    #region States
+    // Idle state
+    public class State_Idle : State<Dooker> {
+        
+        public override string StateName => "Idle";
+
+        private static State_Idle _instance;
+        public static State_Idle Instance {
+            get {
+                if (_instance == null)
+                    _instance = new State_Idle();
+                return _instance;
+            }
+        }
+
+        public override void EnterState(Dooker owner) {
+            owner.StartCoroutine(Idle(owner));
+        }
+
+        IEnumerator Idle(Dooker owner) {
+            // Wait for x amount of seconds before dooker starts to consider doing something else
+            float idleTime = Random.Range(owner.idleTimeMinMax.x, owner.idleTimeMinMax.y);
+            yield return new WaitForSeconds(idleTime);
+            ExitState(owner);
+        }
+
+        public override void ExitState(Dooker owner) {
+            owner.stateMachine.ClearState();
+        }
+
+        public override void UpdateState(Dooker owner) {
+            
+        }
+
+        public override float GetScore(Dooker owner) {
+            float score = 0;
+            return score;
+        }
+
+    }
+
+    // Move state
     public class State_Move : State<Dooker> {
 
-        public override string StateName => "Dooker Move";
+        public override string StateName => "Move";
         
         // Singleton for this state
         private static State_Move _instance;
@@ -127,6 +180,7 @@ namespace Doodie.NPC {
 
         public override void ExitState(Dooker owner) {
             owner.stateMachine.ClearState();
+            owner.stateMachine.ChangeState(State_Idle.Instance);
         }
 
         public override void UpdateState(Dooker owner) {
@@ -135,12 +189,16 @@ namespace Doodie.NPC {
             }
         }
 
+        public override float GetScore(Dooker owner) {
+            float score = 50;
+            return score;
+        }
     }
 
     // Defecate
     public class State_Defecate : State<Dooker> {
 
-        public override string StateName => "Defecating";
+        public override string StateName => "Defecate";
 
         private static State_Defecate _instance;
         public static State_Defecate Instance {
@@ -166,7 +224,7 @@ namespace Doodie.NPC {
             rig.AddTorque(Random.insideUnitSphere * 15, ForceMode.Impulse);
 
             // Update dooker stats
-            owner.DookerStats.RemoveExcrement(15);
+            owner.DookerStats.RemoveExcrement(owner.DookerStats.excrement * .8f);
 
             // FX
             SoundSystem.PlaySound("item_pickup", 1f, owner.transform.position);
@@ -177,17 +235,27 @@ namespace Doodie.NPC {
 
         public override void ExitState(Dooker owner) {
             owner.stateMachine.ClearState();
+            owner.stateMachine.ChangeState(State_Idle.Instance);
         }
 
         public override void UpdateState(Dooker owner) {
             
         }
 
+        public override float GetScore(Dooker owner) {
+            float score = 0;
+            // Increment the score based on the dookers excrement amount
+            float excrementMass = owner.DookerStats.defecationUrgeCurve.Evaluate(owner.DookerStats.excrement / owner.DookerStats.maxFoodMass) * owner.DookerStats.defecationUrgeMultiplier;
+            score += excrementMass;
+            // TODO : Increment the score based on the distance to a defecation point
+            return score;
+        }
+
     }
 
     public class State_Eat : State<Dooker> {
 
-        public override string StateName => "Eating";
+        public override string StateName => "Eat";
 
         private static State_Eat _instance;
         public static State_Eat Instance {
@@ -207,6 +275,10 @@ namespace Doodie.NPC {
             owner.StartCoroutine(MoveToFoodDepo(owner, closestDepo));
         }
 
+        float GetDistanceToClosesFoodDeposit(Dooker owner) {
+            return Vector3.Distance(owner.transform.position, GameManager.GetClosestFoodDeposit(owner).transform.position);
+        }
+
         IEnumerator MoveToFoodDepo(Dooker owner, FoodDeposit foodDepo) {
 
             // Set NPC destination to the food depo and start distance checking after he is appromixately in-range
@@ -223,19 +295,42 @@ namespace Doodie.NPC {
 
             // Take food from the food depo
             owner.Agent.SetDestination(owner.transform.position);
-            foodDepo.TakeFood(owner);
+            Eat(owner, foodDepo);
 
             // After we have finished eating exit the state
             ExitState(owner);
         }
 
+        void Eat(Dooker owner, FoodDeposit foodDepo) {
+            float foodAmount = foodDepo.TakeFood(owner);
+            // Add the foodmass to the dooker and decrement the foodmass in the food deposit
+            owner.DookerStats.AddFoodMass(foodAmount);
+            owner.DookerStats.SetHunger((owner.DookerStats.hunger / 100));
+            // TODO : FX
+        }
+
         public override void ExitState(Dooker owner) {
             owner.stateMachine.ClearState();
+            owner.stateMachine.ChangeState(State_Idle.Instance);
         }
 
         public override void UpdateState(Dooker owner) {
             
         }
+
+        public override float GetScore(Dooker owner) {
+            float score = 0;
+            // Increment the score based on how hungry the dooker is
+            float hungerPercentage = owner.DookerStats.hungerUrgeCurve.Evaluate(owner.DookerStats.hunger / 100);
+            score += hungerPercentage * 100;
+
+            // Increment the score based on how close a food deposit is
+            float searchDistance = 30f;
+            float dstPercentage = GetDistanceToClosesFoodDeposit(owner) / searchDistance;
+            score += owner.DookerStats.foodDistanceCurve.Evaluate(dstPercentage) * 60 * hungerPercentage;
+            return score;
+        }
     }
+    #endregion
 
 }
