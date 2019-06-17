@@ -54,6 +54,7 @@ namespace Doodie.NPC {
             AddNutrients(digestionAmount * (digestionEfficiency / 100) * Time.deltaTime);
         }
 
+        // Drains dooker nutrients overtime
         void DrainNutrients() {
             nutrients -= nutrientDrainRate * Time.deltaTime;
             nutrients = Mathf.Clamp(nutrients, 0, 100);
