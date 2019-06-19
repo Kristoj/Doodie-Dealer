@@ -5,7 +5,7 @@ public class Player : MonoBehaviour {
 
     public PlayerCamera Player_Camera { get; set; }
     public PlayerController Player_Controller { get; set; }
-    public Inventory Player_Inventory { get; set; }
+    public PlayerInventory Player_Inventory { get; set; }
     public PlayerInteraction Player_Interaction { get;set; }
     public PlayerUI Player_UI { get; set; }
     public PlayerWallet Player_Wallet { get;set; }
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour {
         // Player components
         Player_Camera = GetComponent<PlayerCamera>();
         Player_Controller = GetComponent<PlayerController>();
-        Player_Inventory = GetComponent<Inventory>();
+        Player_Inventory = GetComponent<PlayerInventory>();
         Player_Interaction = GetComponent<PlayerInteraction>();
         Player_UI = GetComponent<PlayerUI>();
         Player_Wallet = GetComponent<PlayerWallet>();

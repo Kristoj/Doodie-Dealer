@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 8519277205986813968}
   - component: {fileID: 5710301470519003870}
   - component: {fileID: 8519277205986813975}
+  - component: {fileID: 978696013595904838}
   - component: {fileID: 8519277205986813971}
   m_Layer: 10
   m_Name: Player
@@ -161,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultCameraOffset: {x: 0, y: 1.5, z: 0}
-  mouseSensitivity: 170
+  mouseSensitivity: 190
   head: {fileID: 0}
   cam: {fileID: 0}
   camEuler: {x: 0, y: 0, z: 0}
@@ -197,6 +198,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotCount: 16
   slots: []
+--- !u!114 &978696013595904838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8519277205986813981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec61270fa3921ce499644dcf4528c054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!143 &8519277205986813971
 CharacterController:
   m_ObjectHideFlags: 0

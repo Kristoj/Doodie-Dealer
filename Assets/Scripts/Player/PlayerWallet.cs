@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PlayerWallet : MonoBehaviour
 {
-    private float CurMoney { get; set; }
+    private float money;
 
     /// <summary>
     /// Add money to player's wallet
     /// </summary>
     /// <param name="amount">Amount to add</param>
     public void AddMoney(float amount){
-        CurMoney += amount;
-        GameManager.LocalPlayer.Player_UI.moneyAmount.text = "Money: " + CurMoney + "$";
+        money += amount;
+        GameManager.LocalPlayer.Player_UI.moneyAmount.text = "Money: " + money + "$";
     }
 
     /// <summary>
@@ -20,7 +20,7 @@ public class PlayerWallet : MonoBehaviour
     /// </summary>
     /// <param name="amount">Amount to remove</param>
     public void RemoveMoney(float amount){
-        CurMoney -= amount;
-        GameManager.LocalPlayer.Player_UI.moneyAmount.text = "Money: " + CurMoney;
+        money -= amount;
+        GameManager.LocalPlayer.Player_UI.moneyAmount.text = "Money: " + money;
     }
 }
