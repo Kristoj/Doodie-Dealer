@@ -1,0 +1,1 @@
+For the Normalmap you might need to Flip the Y-axis!
