@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
 
+    [Header("Slots")]
     [SerializeField] private uint slotCount = 16;
+    [SerializeField] private Vector2 slotSize = new Vector2(50, 50);
+    [SerializeField] private float slotGap = 25f;
+    [SerializeField] private Vector2 slotArea = new Vector2(500, 800);
     [SerializeField] private List<Slot> slots = new List<Slot>();
     
     void Awake() {
@@ -15,6 +20,8 @@ public class Inventory : MonoBehaviour {
         for (uint i = 0; i < slotCount; i++) {
             slots.Add(new Slot());
         }
+
+        // Add a slotGUI for each slot spawned
     }
 
     /// <summary>
@@ -23,12 +30,13 @@ public class Inventory : MonoBehaviour {
     /// <param name="itemToAdd">Item that will be added</param>
     public void AddItem(Item itemToAdd) {
         for (int i = 0; i < slotCount; i++) {
-            // Check if we can stack the item to be added to the target slot item
+            // Check if we can stack the item to any slot
             if (slots[i].Item != null && slots[i].Item.itemId == itemToAdd.itemId) {
                 slots[i].Item.stackSize++;          // Increment the item stack size
                 itemToAdd.DestroyItem();            // Destroy item that we just added to the stack
                 break;
             }
+            // Otherwise add item to empty slot
             else if (slots[i].Item == null) {
                 slots[i].Item = itemToAdd;          // Add item to the slot
                 itemToAdd.SetActive(false);         // Set item active state to false
@@ -67,7 +75,7 @@ public class Inventory : MonoBehaviour {
     }
 
     /// <summary>
-    /// Clears the given slot and destroys the slot item.
+    /// Clears the given slot and destroys the in it.
     /// </summary>
     /// <param name="slotToClear">Slot to be cleared.</param>
     public void ClearSlot(Slot slotToClear) {
