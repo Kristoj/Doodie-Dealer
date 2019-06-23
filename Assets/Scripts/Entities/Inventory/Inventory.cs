@@ -1,19 +1,37 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 0649
+using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
 
     [Header("Slots")]
+    [SerializeField] private Transform inventoryPanel;
+    [SerializeField] private SlotGUI slotPrefab;
     [SerializeField] private uint slotCount = 16;
-    [SerializeField] private Vector2 slotSize = new Vector2(50, 50);
-    [SerializeField] private float slotGap = 25f;
+    [SerializeField] private float slotSize = .1f;
+    [SerializeField] private float slotGap = .01f;
+    [SerializeField] private float cornerPadding = .05f;
     [SerializeField] private Vector2 slotArea = new Vector2(500, 800);
     [SerializeField] private List<Slot> slots = new List<Slot>();
+
+    [Header("Debug")]
+    [SerializeField] private bool canRefreshSlots;
     
     void Awake() {
         SetupSlots();
+        StartCoroutine(UpdateSlotsCoroutine());
     }
+
+    IEnumerator UpdateSlotsCoroutine() {
+        while (true) {
+            if (canRefreshSlots)
+                UpdateSlots();
+            yield return new WaitForSeconds(.1f);
+        }
+    }
+
     
     // Instantiate slots 
     void SetupSlots() {
@@ -21,7 +39,44 @@ public class Inventory : MonoBehaviour {
             slots.Add(new Slot());
         }
 
-        // Add a slotGUI for each slot spawned
+        UpdateSlots();
+    }
+
+    void UpdateSlots() {
+
+        // Destroy existing slots if there are any
+        for (int i = 0; i < inventoryPanel.childCount; i++) {
+            Destroy(inventoryPanel.GetChild(i).gameObject);
+        }
+
+        int slotsPerRow = (int)(slotArea.x / (slotSize + slotGap) - cornerPadding * 2);
+        int columnCount = Mathf.CeilToInt(((float)slotCount / (float)slotsPerRow));
+        float slotOffset = (slotArea.x - (cornerPadding * 2)) / slotsPerRow;
+
+        Debug.Log("Slots per row: " + slotsPerRow);
+        Debug.Log("Columns: " + columnCount);
+        try {
+            for (int y = 0; y < columnCount; y++) {
+                for (int x = 0; x < slotsPerRow; x++) {
+                    float xGap = x > 0 ? slotGap : 0;
+                    float yGap = y > 0 ? slotGap : 0;
+                    Vector3 slotPos = new Vector3((slotOffset * x) + xGap + cornerPadding - (slotArea.x * .5f - slotSize * .5f), 
+                                                (-slotOffset * y) + yGap - cornerPadding + (slotArea.y * .5f - slotSize * .5f), 
+                                                0);
+                    SlotGUI clone = Instantiate(slotPrefab, Vector3.zero, Quaternion.Euler(inventoryPanel.transform.forward), inventoryPanel.transform);
+                    clone.transform.name = "Slot" + y * slotsPerRow + x;
+                    clone.transform.localPosition = slotPos;
+
+                    // Break from the loop when we have instantiated every slot
+                    if (y * slotsPerRow + x == slotCount - 1) {
+                        break;
+                    }
+                }
+            }
+        }
+        catch (System.Exception e) {
+            Debug.LogException(e);
+        }
     }
 
     /// <summary>
