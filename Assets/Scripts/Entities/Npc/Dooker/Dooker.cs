@@ -95,9 +95,6 @@ namespace Doodie.NPC {
                             highestScore = score;
                             bestState = states[i];
                         }
-
-                        // Debug
-                        Debug.Log(states[i].StateName + " got the score of " + score + ".");
                     }
 
                     // Change to the best state
